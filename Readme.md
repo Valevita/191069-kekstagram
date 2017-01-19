@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url] [![Dependency status][dependency-image]][dependency-url]
 
 * Студент: [Valeria Kasatkina](https://up.htmlacademy.ru/javascript/8/user/191069).
-* Наставник: `Неизвестно`.
+* Наставник: [Татьяна Коростелева](https://up.htmlacademy.ru/javascript/8/user/105927).
 
 ---
 
