@@ -2,8 +2,8 @@
 
 var uploadOverlay = document.querySelector('.upload-overlay');
 var uploadSelectImage = document.querySelector('#upload-select-image');
-var uploadFile = document.querySelector('#upload-file');
-var uploadFormCancel = document.querySelector('.upload-form-cancel');
+var uploadFile = uploadSelectImage.querySelector('#upload-file');
+var uploadFormCancel = uploadOverlay.querySelector('.upload-form-cancel');
 
 uploadOverlay.classList.add('invisible');
 uploadSelectImage.classList.remove('invisible');
@@ -18,50 +18,50 @@ uploadFormCancel.addEventListener('click', function () {
   uploadSelectImage.classList.remove('invisible');
 });
 
-var filterImagePreview = document.querySelector('.filter-image-preview');
-var uploadFilter = document.querySelectorAll('input[name = "upload-filter"]');
+var filterImagePreview = uploadOverlay.querySelector('.filter-image-preview');
+var uploadFilter = uploadOverlay.querySelectorAll('input[name = "upload-filter"]');
 
-var currentFilterName = null;
-var setNewFilter = function (filterName) {
-  if (currentFilterName !== null) {
-    filterImagePreview.classList.remove(currentFilterName);
-  }
-  filterImagePreview.classList.add(filterName);
-  currentFilterName = filterName;
-};
 for (var i = 0; i < uploadFilter.length; i++) {
   uploadFilter[i].addEventListener('change', function (event) {
-    setNewFilter(event.target.id.substring(7));
+    var imagePreviewClass = '.filter-image-preview';
+    var filterName = 'filter-' + event.target.value;
+    filterImagePreview.className = imagePreviewClass + ' ' + filterName;
   });
 }
 
-var buttonImageSmaller = document.querySelector('.upload-resize-controls-button-dec');
-var buttonImageBigger = document.querySelector('.upload-resize-controls-button-inc');
-var controlsValue = document.querySelector('.upload-resize-controls-value');
-var imagePreview = document.querySelector('.filter-image-preview');
+var buttonImageSmaller = uploadOverlay.querySelector('.upload-resize-controls-button-dec');
+var buttonImageBigger = uploadOverlay.querySelector('.upload-resize-controls-button-inc');
+var controlsValue = uploadOverlay.querySelector('.upload-resize-controls-value');
+var imagePreview = uploadOverlay.querySelector('.filter-image-preview');
+
+var CONTROLS_STEP = 25;
+var MIN_VALUE = 25;
+var MAX_VALUE = 100;
+
+var resizeImage = function (percent) {
+  var controlsValueScale = percent * 0.01;
+  imagePreview.style.transform = 'scale(' + controlsValueScale + ')';
+};
+
+var changePreviewValue = function (percent) {
+  var controlsValueNew = percent + '%';
+  controlsValue.value = controlsValueNew;
+};
 
 controlsValue.value = '100%';
 
+var percentStringToInt = function (string) {
+  return parseInt(string.substring(0, string.length - 1), 10);
+};
+
 buttonImageSmaller.addEventListener('click', function () {
-  var controlsValueNum = parseInt(controlsValue.value.substring(0, controlsValue.value.length - 1), 10);
-  controlsValueNum = controlsValueNum - 25;
-  if (controlsValueNum < 25) {
-    controlsValueNum = 25;
-  }
-  var controlsValueNew = (controlsValueNum) + '%';
-  var controlsValueScale = controlsValueNum * 0.01;
-  controlsValue.value = controlsValueNew;
-  imagePreview.style.transform = 'scale(' + controlsValueScale + ')';
+  var controlsValueNum = Math.max(percentStringToInt(controlsValue.value) - CONTROLS_STEP, MIN_VALUE);
+  changePreviewValue(controlsValueNum);
+  resizeImage(controlsValueNum);
 });
 
 buttonImageBigger.addEventListener('click', function () {
-  var controlsValueNum = parseInt(controlsValue.value.substring(0, controlsValue.value.length - 1), 10);
-  controlsValueNum = controlsValueNum + 25;
-  if (controlsValueNum > 100) {
-    controlsValueNum = 100;
-  }
-  var controlsValueNew = (controlsValueNum) + '%';
-  var controlsValueScale = controlsValueNum * 0.01;
-  controlsValue.value = controlsValueNew;
-  imagePreview.style.transform = 'scale(' + controlsValueScale + ')';
+  var controlsValueNum = Math.min(percentStringToInt(controlsValue.value) + CONTROLS_STEP, MAX_VALUE);
+  changePreviewValue(controlsValueNum);
+  resizeImage(controlsValueNum);
 });
