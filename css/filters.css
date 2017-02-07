@@ -9,3 +9,8 @@
   -webkit-filter: hue-rotate(20deg) brightness(1.4);
           filter: hue-rotate(20deg) brightness(1.4);
 }
+
+.upload-filter-controls input[type=radio] {
+  visibility: visible;
+  width: 0px;
+}
