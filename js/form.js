@@ -38,19 +38,24 @@ uploadFormCancel.addEventListener('click', function () {
 var filterImagePreview = uploadOverlay.querySelector('.filter-image-preview');
 var ENTER_KEY_CODE = 13;
 
+var setChosenFilter = function (filter) {
+  var imagePreviewClass = '.filter-image-preview';
+  var filterName = 'filter-' + filter;
+  filterImagePreview.className = imagePreviewClass + ' ' + filterName;
+};
+
 var changeFilter = function (event) {
-  var imagePreviewClass;
-  var filterName;
   if (event.type === 'change') {
-    imagePreviewClass = '.filter-image-preview';
-    filterName = 'filter-' + event.target.value;
-    filterImagePreview.className = imagePreviewClass + ' ' + filterName;
+    if (event.target.type === 'radio') {
+      setChosenFilter(event.target.value);
+    }
+
   } else if (event.type === 'keydown') {
     if (event.keyCode === ENTER_KEY_CODE) {
-      event.target.control.checked = true;
-      imagePreviewClass = '.filter-image-preview';
-      filterName = 'filter-' + event.target.control.defaultValue;
-      filterImagePreview.className = imagePreviewClass + ' ' + filterName;
+      if (event.target.tagName === 'LABEL') {
+        event.target.control.checked = true;
+        setChosenFilter(event.target.control.defaultValue);
+      }
     }
   }
 };
