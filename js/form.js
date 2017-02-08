@@ -36,13 +36,27 @@ uploadFormCancel.addEventListener('click', function () {
 
 
 var filterImagePreview = uploadOverlay.querySelector('.filter-image-preview');
+var ENTER_KEY_CODE = 13;
 
-uploadFilterControls.addEventListener('change', function (event) {
-  var imagePreviewClass = '.filter-image-preview';
-  var filterName = 'filter-' + event.target.value;
-  filterImagePreview.className = imagePreviewClass + ' ' + filterName;
-});
+var changeFilter = function (event) {
+  var imagePreviewClass;
+  var filterName;
+  if (event.type === 'change') {
+    imagePreviewClass = '.filter-image-preview';
+    filterName = 'filter-' + event.target.value;
+    filterImagePreview.className = imagePreviewClass + ' ' + filterName;
+  } else if (event.type === 'keydown') {
+    if (event.keyCode === ENTER_KEY_CODE) {
+      event.target.control.checked = true;
+      imagePreviewClass = '.filter-image-preview';
+      filterName = 'filter-' + event.target.control.defaultValue;
+      filterImagePreview.className = imagePreviewClass + ' ' + filterName;
+    }
+  }
+};
 
+uploadFilterControls.addEventListener('change', changeFilter);
+uploadFilterControls.addEventListener('keydown', changeFilter);
 
 var buttonImageSmaller = uploadOverlay.querySelector('.upload-resize-controls-button-dec');
 var buttonImageBigger = uploadOverlay.querySelector('.upload-resize-controls-button-inc');
