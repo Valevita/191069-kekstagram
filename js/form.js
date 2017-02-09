@@ -4,30 +4,64 @@ var uploadOverlay = document.querySelector('.upload-overlay');
 var uploadSelectImage = document.querySelector('#upload-select-image');
 var uploadFile = uploadSelectImage.querySelector('#upload-file');
 var uploadFormCancel = uploadOverlay.querySelector('.upload-form-cancel');
+var uploadFilterControls = uploadOverlay.querySelector('.upload-filter-controls');
 
-uploadOverlay.classList.add('invisible');
-uploadSelectImage.classList.remove('invisible');
+var ESC_KEY_CODE = 27;
 
-uploadFile.addEventListener('change', function () {
+var showSelectImage = function () {
+  uploadOverlay.classList.add('invisible');
+  uploadSelectImage.classList.remove('invisible');
+};
+
+var showOverlay = function () {
   uploadOverlay.classList.remove('invisible');
   uploadSelectImage.classList.add('invisible');
+  document.addEventListener('keydown', function (event) {
+    if (event.keyCode === ESC_KEY_CODE) {
+      uploadOverlay.classList.add('invisible');
+      uploadSelectImage.classList.remove('invisible');
+    }
+  });
+};
+
+showSelectImage();
+
+uploadFile.addEventListener('change', function () {
+  showOverlay();
 });
 
 uploadFormCancel.addEventListener('click', function () {
-  uploadOverlay.classList.add('invisible');
-  uploadSelectImage.classList.remove('invisible');
+  showSelectImage();
 });
 
-var filterImagePreview = uploadOverlay.querySelector('.filter-image-preview');
-var uploadFilter = uploadOverlay.querySelectorAll('input[name = "upload-filter"]');
 
-for (var i = 0; i < uploadFilter.length; i++) {
-  uploadFilter[i].addEventListener('change', function (event) {
-    var imagePreviewClass = '.filter-image-preview';
-    var filterName = 'filter-' + event.target.value;
-    filterImagePreview.className = imagePreviewClass + ' ' + filterName;
-  });
-}
+var filterImagePreview = uploadOverlay.querySelector('.filter-image-preview');
+var ENTER_KEY_CODE = 13;
+
+var setChosenFilter = function (filter) {
+  var imagePreviewClass = '.filter-image-preview';
+  var filterName = 'filter-' + filter;
+  filterImagePreview.className = imagePreviewClass + ' ' + filterName;
+};
+
+var changeFilter = function (event) {
+  if (event.type === 'change') {
+    if (event.target.type === 'radio') {
+      setChosenFilter(event.target.value);
+    }
+
+  } else if (event.type === 'keydown') {
+    if (event.keyCode === ENTER_KEY_CODE) {
+      if (event.target.tagName === 'LABEL') {
+        event.target.control.checked = true;
+        setChosenFilter(event.target.control.defaultValue);
+      }
+    }
+  }
+};
+
+uploadFilterControls.addEventListener('change', changeFilter);
+uploadFilterControls.addEventListener('keydown', changeFilter);
 
 var buttonImageSmaller = uploadOverlay.querySelector('.upload-resize-controls-button-dec');
 var buttonImageBigger = uploadOverlay.querySelector('.upload-resize-controls-button-inc');
