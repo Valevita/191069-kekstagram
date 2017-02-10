@@ -8,94 +8,35 @@ var uploadFilterControls = uploadOverlay.querySelector('.upload-filter-controls'
 
 var ESC_KEY_CODE = 27;
 
-var showSelectImage = function () {
-  uploadOverlay.classList.add('invisible');
-  uploadSelectImage.classList.remove('invisible');
+var showForm = function (elementHide, elementShow) {
+  elementHide.classList.add('invisible');
+  elementShow.classList.remove('invisible');
 };
 
 var showOverlay = function () {
-  uploadOverlay.classList.remove('invisible');
-  uploadSelectImage.classList.add('invisible');
+  showForm(uploadSelectImage, uploadOverlay);
   document.addEventListener('keydown', function (event) {
     if (event.keyCode === ESC_KEY_CODE) {
-      uploadOverlay.classList.add('invisible');
-      uploadSelectImage.classList.remove('invisible');
+      showForm(uploadOverlay, uploadSelectImage);
     }
   });
 };
 
-showSelectImage();
+showForm(uploadOverlay, uploadSelectImage);
 
 uploadFile.addEventListener('change', function () {
   showOverlay();
 });
 
 uploadFormCancel.addEventListener('click', function () {
-  showSelectImage();
+  showForm(uploadOverlay, uploadSelectImage);
 });
 
 
-var filterImagePreview = uploadOverlay.querySelector('.filter-image-preview');
-var ENTER_KEY_CODE = 13;
+uploadFilterControls.addEventListener('change', window.initializeFilters);
+uploadFilterControls.addEventListener('keydown', window.initializeFilters);
 
-var setChosenFilter = function (filter) {
-  var imagePreviewClass = '.filter-image-preview';
-  var filterName = 'filter-' + filter;
-  filterImagePreview.className = imagePreviewClass + ' ' + filterName;
-};
+window.controlsValue.value = '100%';
+window.createScale(window.buttonImageSmaller, window.CONTROLS_STEP, window.controlsValue.value);
+window.createScale(window.buttonImageBigger, window.CONTROLS_STEP, window.controlsValue.value);
 
-var changeFilter = function (event) {
-  if (event.type === 'change') {
-    if (event.target.type === 'radio') {
-      setChosenFilter(event.target.value);
-    }
-
-  } else if (event.type === 'keydown') {
-    if (event.keyCode === ENTER_KEY_CODE) {
-      if (event.target.tagName === 'LABEL') {
-        event.target.control.checked = true;
-        setChosenFilter(event.target.control.defaultValue);
-      }
-    }
-  }
-};
-
-uploadFilterControls.addEventListener('change', changeFilter);
-uploadFilterControls.addEventListener('keydown', changeFilter);
-
-var buttonImageSmaller = uploadOverlay.querySelector('.upload-resize-controls-button-dec');
-var buttonImageBigger = uploadOverlay.querySelector('.upload-resize-controls-button-inc');
-var controlsValue = uploadOverlay.querySelector('.upload-resize-controls-value');
-var imagePreview = uploadOverlay.querySelector('.filter-image-preview');
-
-var CONTROLS_STEP = 25;
-var MIN_VALUE = 25;
-var MAX_VALUE = 100;
-
-var resizeImage = function (percent) {
-  var controlsValueScale = percent * 0.01;
-  imagePreview.style.transform = 'scale(' + controlsValueScale + ')';
-};
-
-var changePreviewValue = function (percent) {
-  var controlsValueNew = percent + '%';
-  controlsValue.value = controlsValueNew;
-};
-
-controlsValue.value = '100%';
-
-var percentStringToInt = function (string) {
-  return parseInt(string.substring(0, string.length - 1), 10);
-};
-
-buttonImageSmaller.addEventListener('click', function () {
-  var controlsValueNum = Math.max(percentStringToInt(controlsValue.value) - CONTROLS_STEP, MIN_VALUE);
-  changePreviewValue(controlsValueNum);
-  resizeImage(controlsValueNum);
-});
-
-buttonImageBigger.addEventListener('click', function () {
-  var controlsValueNum = Math.min(percentStringToInt(controlsValue.value) + CONTROLS_STEP, MAX_VALUE);
-  changePreviewValue(controlsValueNum);
-  resizeImage(controlsValueNum);
-});
