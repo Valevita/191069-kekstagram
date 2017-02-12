@@ -1,12 +1,10 @@
 'use strict';
 
-window.CONTROLS_STEP = 25;
 window.MIN_VALUE = 25;
 window.MAX_VALUE = 100;
 
-window.controlsValue = document.querySelector('.upload-resize-controls-value');
-window.buttonImageSmaller = document.querySelector('.upload-resize-controls-button-dec');
-window.buttonImageBigger = document.querySelector('.upload-resize-controls-button-inc');
+window.controlsForm = document.querySelector('.upload-resize-controls');
+window.controlsValue = window.controlsForm.querySelector('.upload-resize-controls-value');
 
 var resizeImage = function (percent) {
   var controlsValueScale = percent * 0.01;
@@ -23,13 +21,15 @@ var percentStringToInt = function (string) {
 };
 
 window.createScale = function (element, step, value) {
-  element.addEventListener('click', function () {
-    if (element === window.buttonImageSmaller) {
-      value = Math.max(percentStringToInt(window.controlsValue.value) - window.CONTROLS_STEP, window.MIN_VALUE);
-    } else if (element === window.buttonImageBigger) {
-      value = Math.min(percentStringToInt(window.controlsValue.value) + window.CONTROLS_STEP, window.MAX_VALUE);
+  var newValue;
+  window.controlsValue.value = value;
+  element.addEventListener('click', function (event) {
+    if (event.target.className === 'upload-resize-control upload-resize-controls-button upload-resize-controls-button-dec') {
+      newValue = Math.max(percentStringToInt(window.controlsValue.value) - step, window.MIN_VALUE);
+    } else if (event.target.className === 'upload-resize-control upload-resize-controls-button upload-resize-controls-button-inc') {
+      newValue = Math.min(percentStringToInt(window.controlsValue.value) + step, window.MAX_VALUE);
     }
-    changePreviewValue(value);
-    resizeImage(value);
+    changePreviewValue(newValue);
+    resizeImage(newValue);
   });
 };

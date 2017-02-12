@@ -1,12 +1,8 @@
 'use strict';
 
-var uploadOverlay = document.querySelector('.upload-overlay');
 var uploadSelectImage = document.querySelector('#upload-select-image');
 var uploadFile = uploadSelectImage.querySelector('#upload-file');
-var uploadFormCancel = uploadOverlay.querySelector('.upload-form-cancel');
-var uploadFilterControls = uploadOverlay.querySelector('.upload-filter-controls');
-
-var ESC_KEY_CODE = 27;
+var uploadFormCancel = window.uploadOverlay.querySelector('.upload-form-cancel');
 
 var showForm = function (elementHide, elementShow) {
   elementHide.classList.add('invisible');
@@ -14,29 +10,26 @@ var showForm = function (elementHide, elementShow) {
 };
 
 var showOverlay = function () {
-  showForm(uploadSelectImage, uploadOverlay);
+  showForm(uploadSelectImage, window.uploadOverlay);
   document.addEventListener('keydown', function (event) {
-    if (event.keyCode === ESC_KEY_CODE) {
-      showForm(uploadOverlay, uploadSelectImage);
+    if (window.isEscapeKey(event)) {
+      showForm(window.uploadOverlay, uploadSelectImage);
     }
   });
 };
 
-showForm(uploadOverlay, uploadSelectImage);
+showForm(window.uploadOverlay, uploadSelectImage);
 
 uploadFile.addEventListener('change', function () {
   showOverlay();
 });
 
 uploadFormCancel.addEventListener('click', function () {
-  showForm(uploadOverlay, uploadSelectImage);
+  showForm(window.uploadOverlay, uploadSelectImage);
 });
 
+window.initializeFilters();
 
-uploadFilterControls.addEventListener('change', window.initializeFilters);
-uploadFilterControls.addEventListener('keydown', window.initializeFilters);
+window.createScale(window.controlsForm, 25, '100%');
 
-window.controlsValue.value = '100%';
-window.createScale(window.buttonImageSmaller, window.CONTROLS_STEP, window.controlsValue.value);
-window.createScale(window.buttonImageBigger, window.CONTROLS_STEP, window.controlsValue.value);
 

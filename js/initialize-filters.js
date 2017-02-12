@@ -1,7 +1,8 @@
 'use strict';
 
-window.imagePreview = document.querySelector('.filter-image-preview');
-window.ENTER_KEY_CODE = 13;
+window.uploadOverlay = document.querySelector('.upload-overlay');
+window.imagePreview = window.uploadOverlay.querySelector('.filter-image-preview');
+window.uploadFilterControls = window.uploadOverlay.querySelector('.upload-filter-controls');
 
 window.setChosenFilter = function (filter) {
   var imagePreviewClass = '.filter-image-preview';
@@ -9,18 +10,18 @@ window.setChosenFilter = function (filter) {
   window.imagePreview.className = imagePreviewClass + ' ' + filterName;
 };
 
-window.initializeFilters = function (event) {
-  if (event.type === 'change') {
+window.initializeFilters = function () {
+  window.uploadFilterControls.addEventListener('change', function (event) {
     if (event.target.type === 'radio') {
       window.setChosenFilter(event.target.value);
     }
-
-  } else if (event.type === 'keydown') {
-    if (event.keyCode === window.ENTER_KEY_CODE) {
+  });
+  window.uploadFilterControls.addEventListener('keydown', function (event) {
+    if (window.isEnterKey(event)) {
       if (event.target.tagName === 'LABEL') {
         event.target.control.checked = true;
         window.setChosenFilter(event.target.control.defaultValue);
       }
     }
-  }
+  });
 };
