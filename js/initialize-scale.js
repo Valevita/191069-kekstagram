@@ -24,9 +24,9 @@ window.createScale = function (element, step, value) {
   var newValue;
   window.controlsValue.value = value;
   element.addEventListener('click', function (event) {
-    if (event.target.className === 'upload-resize-control upload-resize-controls-button upload-resize-controls-button-dec') {
+    if (event.target.classList.contains('upload-resize-controls-button-dec')) {
       newValue = Math.max(percentStringToInt(window.controlsValue.value) - step, window.MIN_VALUE);
-    } else if (event.target.className === 'upload-resize-control upload-resize-controls-button upload-resize-controls-button-inc') {
+    } else if (event.target.classList.contains('upload-resize-controls-button-inc')) {
       newValue = Math.min(percentStringToInt(window.controlsValue.value) + step, window.MAX_VALUE);
     }
     changePreviewValue(newValue);

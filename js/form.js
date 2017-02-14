@@ -4,6 +4,9 @@ var uploadSelectImage = document.querySelector('#upload-select-image');
 var uploadFile = uploadSelectImage.querySelector('#upload-file');
 var uploadFormCancel = window.uploadOverlay.querySelector('.upload-form-cancel');
 
+var SCALE_STEP = 25;
+var SCALE_INIT_VALUE = '100%';
+
 var showForm = function (elementHide, elementShow) {
   elementHide.classList.add('invisible');
   elementShow.classList.remove('invisible');
@@ -30,6 +33,6 @@ uploadFormCancel.addEventListener('click', function () {
 
 window.initializeFilters();
 
-window.createScale(window.controlsForm, 25, '100%');
+window.createScale(window.controlsForm, SCALE_STEP, SCALE_INIT_VALUE);
 
 
