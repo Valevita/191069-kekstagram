@@ -31,8 +31,6 @@ uploadFormCancel.addEventListener('click', function () {
   showForm(window.uploadOverlay, uploadSelectImage);
 });
 
-window.initializeFilters();
-
 window.createScale(window.controlsForm, SCALE_STEP, SCALE_INIT_VALUE);
 
 
