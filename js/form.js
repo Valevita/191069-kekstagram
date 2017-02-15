@@ -15,7 +15,7 @@ var showForm = function (elementHide, elementShow) {
 var showOverlay = function () {
   showForm(uploadSelectImage, window.uploadOverlay);
   document.addEventListener('keydown', function (event) {
-    if (window.isEscapeKey(event)) {
+    if (window.utils.isEscapeKey(event)) {
       showForm(window.uploadOverlay, uploadSelectImage);
     }
   });
@@ -30,8 +30,6 @@ uploadFile.addEventListener('change', function () {
 uploadFormCancel.addEventListener('click', function () {
   showForm(window.uploadOverlay, uploadSelectImage);
 });
-
-window.initializeFilters();
 
 window.createScale(window.controlsForm, SCALE_STEP, SCALE_INIT_VALUE);
 
