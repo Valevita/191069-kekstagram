@@ -15,7 +15,7 @@ var showForm = function (elementHide, elementShow) {
 var showOverlay = function () {
   showForm(uploadSelectImage, window.uploadOverlay);
   document.addEventListener('keydown', function (event) {
-    if (window.isEscapeKey(event)) {
+    if (window.utils.isEscapeKey(event)) {
       showForm(window.uploadOverlay, uploadSelectImage);
     }
   });
