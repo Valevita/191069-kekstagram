@@ -4,7 +4,7 @@ window.uploadOverlay = document.querySelector('.upload-overlay');
 window.imagePreview = window.uploadOverlay.querySelector('.filter-image-preview');
 
 var setChosenFilter = function (filter) {
-  var imagePreviewClass = '.filter-image-preview';
+  var imagePreviewClass = 'filter-image-preview';
   var filterName = 'filter-' + filter;
   window.imagePreview.className = imagePreviewClass + ' ' + filterName;
 };
@@ -25,7 +25,7 @@ window.initializeFilters = function (callback) {
       if (event.target.tagName === 'LABEL') {
         event.target.control.checked = true;
         if (typeof callback === 'function') {
-          callback(event.target.value);
+          callback(event.target.control.value);
         }
       }
     }
