@@ -7,12 +7,6 @@ window.createScale = (function () {
   var MAX_VALUE = 100;
 
   var controlsValue = window.controlsForm.querySelector('.upload-resize-controls-value');
-  var imagePreview = window.uploadOverlay.querySelector('.filter-image-preview');
-
-  var resizeImage = function (percent) {
-    var controlsValueScale = percent * 0.01;
-    imagePreview.style.transform = 'scale(' + controlsValueScale + ')';
-  };
 
   var changePreviewValue = function (percent) {
     var controlsValueNew = percent + '%';
@@ -23,7 +17,7 @@ window.createScale = (function () {
     return parseInt(string.substring(0, string.length - 1), 10);
   };
 
-  return function (element, step, value) {
+  return function (element, step, value, callback) {
     var newValue;
     controlsValue.value = value;
     element.addEventListener('click', function (event) {
@@ -33,7 +27,9 @@ window.createScale = (function () {
         newValue = Math.min(percentStringToInt(controlsValue.value) + step, MAX_VALUE);
       }
       changePreviewValue(newValue);
-      resizeImage(newValue);
+      if (typeof callback === 'function') {
+        callback(newValue);
+      }
     });
   };
 })();
