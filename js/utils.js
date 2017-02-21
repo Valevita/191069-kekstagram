@@ -10,6 +10,12 @@ window.utils = (function () {
     },
     isEscapeKey: function (event) {
       return (event.keyCode === ESC_KEY_CODE);
+    },
+
+    addInfoToPicture: function (image, likes, comments, data) {
+      image.src = data.url;
+      likes.innerText = data.likes;
+      comments.innerText = data.comments.length;
     }
   };
 })();
