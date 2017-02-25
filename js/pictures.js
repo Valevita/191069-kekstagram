@@ -1,16 +1,13 @@
 'use strict';
 
 (function () {
+  var DATA_URL = ' https://intensive-javascript-server-myophkugvq.now.sh/kekstagram/data';
+
   window.addInfoToPicture = function (image, likes, comments, data) {
     image.src = data.url;
     likes.innerText = data.likes;
     comments.innerText = data.comments.length;
   };
-})();
-
-
-(function () {
-  var DATA_URL = ' https://intensive-javascript-server-myophkugvq.now.sh/kekstagram/data';
 
   window.load(DATA_URL, function (response) {
     window.pictures = response;
