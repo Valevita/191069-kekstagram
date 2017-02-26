@@ -2,6 +2,10 @@
 
 (function () {
   var DATA_URL = ' https://intensive-javascript-server-myophkugvq.now.sh/kekstagram/data';
+  var template = document.querySelector('#picture-template');
+  var pictureToClone = template.content.querySelector('.picture');
+  var picturesContainer = document.querySelector('.pictures');
+  var pictureFilters = document.querySelector('.filters');
 
   window.addInfoToPicture = function (image, likes, comments, data) {
     image.src = data.url;
@@ -9,74 +13,66 @@
     comments.innerText = data.comments.length;
   };
 
-  window.load(DATA_URL, function (response) {
-    window.pictures = response;
+  var renderPictureElement = function (item) {
+    var newPicture = pictureToClone.cloneNode(true);
+    var image = newPicture.querySelector('img');
+    var likes = newPicture.querySelector('.picture-likes');
+    var comments = newPicture.querySelector('.picture-comments');
 
-    var template = document.querySelector('#picture-template');
-    var pictureToClone = template.content.querySelector('.picture');
-    var picturesContainer = document.querySelector('.pictures');
-    var pictureFilters = document.querySelector('.filters');
+    window.addInfoToPicture(image, likes, comments, item);
+    picturesContainer.appendChild(newPicture);
 
-    var renderPictureElement = function (item) {
-      var newPicture = pictureToClone.cloneNode(true);
-      var image = newPicture.querySelector('img');
-      var likes = newPicture.querySelector('.picture-likes');
-      var comments = newPicture.querySelector('.picture-comments');
+    newPicture.addEventListener('click', function (event) {
+      event.preventDefault();
+      window.showGallery(item);
+    });
+  };
 
-      picturesContainer.appendChild(newPicture);
-      window.addInfoToPicture(image, likes, comments, item);
+  var removeAllPictures = function (parent) {
+    parent.innerHTML = '';
+  };
 
-      newPicture.addEventListener('click', function (event) {
-        event.preventDefault();
-        window.showGallery(item);
-      });
-    };
+  var getRandomElementExcept = function (array, arrayNew) {
+    var isElementNew = false;
+    var randomElement;
 
-    window.pictures.forEach(renderPictureElement);
-
-
-    var removeAllPictures = function (parent) {
-      parent.innerHTML = '';
-    };
-
-    var getRandomElementExcept = function (array, arraynew) {
-      var isElementNew = false;
-      var randomElement;
-
-      while (!isElementNew) {
-        randomElement = window.utils.getRandomElement(array);
-        isElementNew = true;
-        if (arraynew.indexOf(randomElement) !== -1) {
-          isElementNew = false;
-        }
+    while (!isElementNew) {
+      randomElement = window.utils.getRandomElement(array);
+      isElementNew = true;
+      if (arrayNew.indexOf(randomElement) !== -1) {
+        isElementNew = false;
       }
-      return randomElement;
-    };
+    }
+    return randomElement;
+  };
 
+  window.load(DATA_URL, function (response) {
+    var pictures = response;
 
+    pictures.forEach(renderPictureElement);
     pictureFilters.classList.remove('hidden');
 
     pictureFilters.addEventListener('click', function (event) {
       switch (event.target.value) {
         case 'popular':
           removeAllPictures(picturesContainer);
-          window.pictures.forEach(renderPictureElement);
+          pictures.forEach(renderPictureElement);
           break;
 
         case 'new':
           removeAllPictures(picturesContainer);
           var newPicturesArray = [];
-          var i = 0;
-          while (i < 10) {
-            newPicturesArray[newPicturesArray.length] = getRandomElementExcept(window.pictures, newPicturesArray);
-            i++;
+
+          for (var i = 0; i < 10; i++) {
+            newPicturesArray[newPicturesArray.length] = getRandomElementExcept(pictures, newPicturesArray);
           }
           newPicturesArray.forEach(renderPictureElement);
           break;
 
         case 'discussed':
           removeAllPictures(picturesContainer);
-          var sortedPicturesArray = window.pictures.slice(window.pictures);
+          var sortedPicturesArray = pictures.slice(pictures);
+
           sortedPicturesArray.sort(function (item1, item2) {
             return item2.comments.length - item1.comments.length;
           });
@@ -84,7 +80,6 @@
           break;
       }
     });
-
   });
 })();
 
