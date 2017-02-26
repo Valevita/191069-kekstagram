@@ -20,9 +20,10 @@
       var newValue;
       window.controlsValue.value = value;
       element.addEventListener('click', function (event) {
-        if (event.target.classList.contains('upload-resize-controls-button-dec')) {
+        var eventTarget = event.target;
+        if (eventTarget.classList.contains('upload-resize-controls-button-dec')) {
           newValue = Math.max(window.percentStringToInt(window.controlsValue.value) - step, MIN_VALUE);
-        } else if (event.target.classList.contains('upload-resize-controls-button-inc')) {
+        } else if (eventTarget.classList.contains('upload-resize-controls-button-inc')) {
           newValue = Math.min(window.percentStringToInt(window.controlsValue.value) + step, MAX_VALUE);
         }
         changePreviewValue(newValue);

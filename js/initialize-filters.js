@@ -14,19 +14,21 @@
     var uploadFilterControls = window.uploadOverlay.querySelector('.upload-filter-controls');
 
     uploadFilterControls.addEventListener('change', function (event) {
-      if (event.target.type === 'radio') {
+      var eventChangeTarget = event.target;
+      if (eventChangeTarget.type === 'radio') {
         if (typeof callback === 'function') {
-          callback(event.target.value);
+          callback(eventChangeTarget.value);
         }
       }
     });
 
     uploadFilterControls.addEventListener('keydown', function (event) {
+      var eventKeydownTarget = event.target;
       if (window.utils.isEnterKey(event)) {
-        if (event.target.tagName === 'LABEL') {
+        if (eventKeydownTarget.tagName === 'LABEL') {
           event.target.control.checked = true;
           if (typeof callback === 'function') {
-            callback(event.target.control.value);
+            callback(eventKeydownTarget.control.value);
           }
         }
       }
