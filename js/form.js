@@ -2,8 +2,13 @@
 
 (function () {
   var uploadSelectImage = document.querySelector('#upload-select-image');
+  var uploadOverlay = document.querySelector('.upload-overlay');
+  var controlsForm = document.querySelector('.upload-resize-controls');
   var uploadFile = uploadSelectImage.querySelector('#upload-file');
-  var uploadFormCancel = window.uploadOverlay.querySelector('.upload-form-cancel');
+  var uploadFormCancel = uploadOverlay.querySelector('.upload-form-cancel');
+  var imagePreview = uploadOverlay.querySelector('.filter-image-preview');
+  var controlsValue = controlsForm.querySelector('.upload-resize-controls-value');
+  var currentFilter = 'filter-none';
 
   var SCALE_STEP = 25;
   var SCALE_INIT_VALUE = '100%';
@@ -14,26 +19,37 @@
   };
 
   var showOverlay = function () {
-    showForm(uploadSelectImage, window.uploadOverlay);
+    showForm(uploadSelectImage, uploadOverlay);
+
     document.addEventListener('keydown', function (event) {
       if (window.utils.isEscapeKey(event)) {
-        showForm(window.uploadOverlay, uploadSelectImage);
+        showForm(uploadOverlay, uploadSelectImage);
       }
     });
   };
 
   var resizeImage = function (percent) {
     var controlsValueScale = percent * 0.01;
-    window.imagePreview.style.transform = 'scale(' + controlsValueScale + ')';
+
+    imagePreview.style.transform = 'scale(' + controlsValueScale + ')';
+  };
+
+  var changeFilter = function (filter) {
+    var filterName = 'filter-' + filter;
+
+    imagePreview.classList.remove(currentFilter);
+    imagePreview.classList.add(filterName);
+    currentFilter = filterName;
   };
 
   var resetForm = function () {
-    window.controlsValue.value = SCALE_INIT_VALUE;
-    resizeImage(window.percentStringToInt(window.controlsValue.value));
-    window.imagePreview.className = 'filter-image-preview filter-none';
+    controlsValue.value = SCALE_INIT_VALUE;
+    resizeImage(parseInt(controlsValue.value, 10));
+    imagePreview.classList.remove(currentFilter);
+    imagePreview.classList.add('filter-none');
   };
 
-  showForm(window.uploadOverlay, uploadSelectImage);
+  showForm(uploadOverlay, uploadSelectImage);
 
   uploadFile.addEventListener('change', function () {
     showOverlay();
@@ -41,8 +57,9 @@
   });
 
   uploadFormCancel.addEventListener('click', function () {
-    showForm(window.uploadOverlay, uploadSelectImage);
+    showForm(uploadOverlay, uploadSelectImage);
   });
 
-  window.createScale(window.controlsForm, SCALE_STEP, SCALE_INIT_VALUE, resizeImage);
+  window.createScale(controlsForm, SCALE_STEP, SCALE_INIT_VALUE, resizeImage);
+  window.initializeFilters(changeFilter);
 })();
