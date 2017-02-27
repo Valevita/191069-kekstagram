@@ -25,6 +25,7 @@
       if (eventKeydownTarget.tagName !== 'LABEL') {
         return;
       }
+      event.target.control.checked = true;
       if (typeof callback === 'function') {
         callback(eventKeydownTarget.control.value);
       }

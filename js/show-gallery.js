@@ -14,7 +14,11 @@
   window.showGallery = function (data) {
     gallery.classList.remove('invisible');
     closeGallery.focus();
-    window.addInfoToPicture(image, likes, comments, data);
+
+    image.src = data.url;
+    likes.innerText = data.likes;
+    comments.innerText = data.comments.length;
+
     closeGallery.addEventListener('click', showGalleryWindow);
     closeGallery.addEventListener('keydown', function (event) {
       if (window.utils.isEnterKey(event)) {

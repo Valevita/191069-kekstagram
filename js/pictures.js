@@ -7,19 +7,16 @@
   var picturesContainer = document.querySelector('.pictures');
   var pictureFilters = document.querySelector('.filters');
 
-  window.addInfoToPicture = function (image, likes, comments, data) {
-    image.src = data.url;
-    likes.innerText = data.likes;
-    comments.innerText = data.comments.length;
-  };
-
   var renderPictureElement = function (item) {
     var newPicture = pictureToClone.cloneNode(true);
     var image = newPicture.querySelector('img');
     var likes = newPicture.querySelector('.picture-likes');
     var comments = newPicture.querySelector('.picture-comments');
 
-    window.addInfoToPicture(image, likes, comments, item);
+    image.src = item.url;
+    likes.innerText = item.likes;
+    comments.innerText = item.comments.length;
+
     picturesContainer.appendChild(newPicture);
 
     newPicture.addEventListener('click', function (event) {
@@ -38,10 +35,7 @@
 
     while (!isElementNew) {
       randomElement = window.utils.getRandomElement(array);
-      isElementNew = true;
-      if (arrayNew.indexOf(randomElement) !== -1) {
-        isElementNew = false;
-      }
+      isElementNew = arrayNew.indexOf(randomElement) === -1;
     }
     return randomElement;
   };
@@ -53,24 +47,22 @@
     pictureFilters.classList.remove('hidden');
 
     pictureFilters.addEventListener('click', function (event) {
+      removeAllPictures(picturesContainer);
       switch (event.target.value) {
         case 'popular':
-          removeAllPictures(picturesContainer);
           pictures.forEach(renderPictureElement);
           break;
 
         case 'new':
-          removeAllPictures(picturesContainer);
           var newPicturesArray = [];
 
           for (var i = 0; i < 10; i++) {
-            newPicturesArray[newPicturesArray.length] = getRandomElementExcept(pictures, newPicturesArray);
+            newPicturesArray[i] = getRandomElementExcept(pictures, newPicturesArray);
           }
           newPicturesArray.forEach(renderPictureElement);
           break;
 
         case 'discussed':
-          removeAllPictures(picturesContainer);
           var sortedPicturesArray = pictures.slice(pictures);
 
           sortedPicturesArray.sort(function (item1, item2) {
