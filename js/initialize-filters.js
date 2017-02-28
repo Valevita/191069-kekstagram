@@ -22,7 +22,6 @@
       if (!window.utils.isEnterKey(event)) {
         return;
       }
-      event.preventDefault();
       if (eventKeydownTarget.tagName !== 'LABEL') {
         return;
       }
