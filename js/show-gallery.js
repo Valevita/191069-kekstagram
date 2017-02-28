@@ -7,9 +7,16 @@
   var likes = gallery.querySelector('.gallery-overlay .likes-count');
   var comments = gallery.querySelector('.gallery-overlay .comments-count');
 
-  var showGalleryWindow = function () {
+  var galleryCloseHandler = function () {
     gallery.classList.add('invisible');
   };
+
+  closeGallery.addEventListener('click', galleryCloseHandler);
+  closeGallery.addEventListener('keydown', function (event) {
+    if (window.utils.isEnterKey(event)) {
+      galleryCloseHandler();
+    }
+  });
 
   window.showGallery = function (data) {
     gallery.classList.remove('invisible');
@@ -18,12 +25,5 @@
     image.src = data.url;
     likes.innerText = data.likes;
     comments.innerText = data.comments.length;
-
-    closeGallery.addEventListener('click', showGalleryWindow);
-    closeGallery.addEventListener('keydown', function (event) {
-      if (window.utils.isEnterKey(event)) {
-        showGalleryWindow();
-      }
-    });
   };
 })();
