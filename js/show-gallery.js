@@ -7,14 +7,14 @@
   var likes = gallery.querySelector('.gallery-overlay .likes-count');
   var comments = gallery.querySelector('.gallery-overlay .comments-count');
 
-  var closeGalleryHandler = function () {
+  var galleryCloseHandler = function () {
     gallery.classList.add('invisible');
   };
 
-  closeGallery.addEventListener('click', closeGalleryHandler);
+  closeGallery.addEventListener('click', galleryCloseHandler);
   closeGallery.addEventListener('keydown', function (event) {
     if (window.utils.isEnterKey(event)) {
-      closeGalleryHandler();
+      galleryCloseHandler();
     }
   });
 
