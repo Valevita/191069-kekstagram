@@ -4,7 +4,7 @@ window.utils = (function () {
   var ENTER_KEY_CODE = 13;
   var ESC_KEY_CODE = 27;
 
-  var randomNumber = function (maxValue) {
+  var getRandomNumber = function (maxValue) {
     return Math.floor(Math.random() * maxValue);
   };
 
@@ -16,7 +16,7 @@ window.utils = (function () {
       return (event.keyCode === ESC_KEY_CODE);
     },
     getRandomElement: function (array) {
-      return array[randomNumber(array.length)];
+      return array[getRandomNumber(array.length)];
     }
   };
 })();

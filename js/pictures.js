@@ -54,21 +54,21 @@
           break;
 
         case 'new':
-          var newPicturesArray = [];
+          var newPictures = [];
 
           for (var i = 0; i < 10; i++) {
-            newPicturesArray[i] = getRandomElementExcept(pictures, newPicturesArray);
+            newPictures[i] = getRandomElementExcept(pictures, newPictures);
           }
-          newPicturesArray.forEach(renderPictureElement);
+          newPictures.forEach(renderPictureElement);
           break;
 
         case 'discussed':
-          var sortedPicturesArray = pictures.slice(pictures);
+          var sortedPictures = pictures.slice(pictures);
 
-          sortedPicturesArray.sort(function (item1, item2) {
+          sortedPictures.sort(function (item1, item2) {
             return item2.comments.length - item1.comments.length;
           });
-          sortedPicturesArray.forEach(renderPictureElement);
+          sortedPictures.forEach(renderPictureElement);
           break;
       }
     });
